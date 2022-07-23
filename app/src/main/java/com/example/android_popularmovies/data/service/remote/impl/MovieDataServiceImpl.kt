@@ -1,4 +1,4 @@
-package com.example.android_popularmovies.data.source.remote.impl
+package com.example.android_popularmovies.data.service.remote.impl
 
 import com.example.android_popularmovies.data.mapper.MovieDetailResponseToDomainModel
 import com.example.android_popularmovies.data.mapper.MovieResponseToDomainModel
@@ -14,8 +14,8 @@ class MovieDataServiceImpl @Inject constructor(
     private val movieDetailResponseToDomainModel: MovieDetailResponseToDomainModel,
 ) : MovieDataService {
     override suspend fun getMovies(): List<MovieDomainModel> {
-        return movieApiService.popularMovies().results.map {
-            movieResponseToDomainModel.map(it)
+        return movieApiService.popularMovies().results.map { movieResponse ->
+            movieResponseToDomainModel.map(movieResponse)
         }
     }
 

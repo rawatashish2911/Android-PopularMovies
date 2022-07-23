@@ -9,7 +9,7 @@ import com.example.android_popularmovies.utils.getMovieErrorMessage
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
-    private var movieDataService: MovieDataService
+    private val movieDataService: MovieDataService
 ) : MovieRepository {
 
     override suspend fun getMovies(): NetworkResult<List<MovieDomainModel>> {

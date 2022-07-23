@@ -14,15 +14,11 @@ class MoviesViewHolder(private val binding: MovieViewBinding, val onItemTap: (id
             movieRating.text = movie.voteAverage.toString()
             movieOverview.text = movie.overview
             movieTitle.text = movie.title
-            Glide.with(itemView.context).load("${movieImagePath}${movie.posterPath}")
+            Glide.with(itemView.context).load(movie.posterPath)
                 .into(moviePhoto)
             movieCard.setOnClickListener {
                 onItemTap(movie.id)
             }
         }
-    }
-
-    private companion object {
-        const val movieImagePath: String = "https://image.tmdb.org/t/p/w500"
     }
 }

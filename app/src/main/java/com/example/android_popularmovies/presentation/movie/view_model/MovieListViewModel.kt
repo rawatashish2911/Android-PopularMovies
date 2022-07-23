@@ -65,7 +65,7 @@ class MovieListViewModel @Inject constructor(
             filterMoviesUseCase(
                 state.movies.map { movieStateToDomainModel.map(it) },
                 text
-            ).map { movieDomainToStateMapper.map(it) }
+            ).map { movie -> movieDomainToStateMapper.map(movie) }
         } else {
             mutableListOf()
         }

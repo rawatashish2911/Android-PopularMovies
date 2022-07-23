@@ -18,10 +18,11 @@ import java.util.concurrent.TimeUnit
 class NetworkModule {
     private val logging: HttpLoggingInterceptor = HttpLoggingInterceptor()
 
-    companion object {
+    private companion object {
         const val apiKey: String = "api_key"
         const val connectTimeout: Long = 60
-        const val apiBaseUrl = "https://api.themoviedb.org/3/"
+        const val apiVersion: Int = 3
+        const val apiBaseUrl = "https://api.themoviedb.org/$apiVersion/"
     }
 
     @Provides

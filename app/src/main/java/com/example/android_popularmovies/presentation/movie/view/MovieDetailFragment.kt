@@ -24,9 +24,6 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class MovieDetailFragment : Fragment() {
-    companion object {
-        const val movieImagePath: String = "https://image.tmdb.org/t/p/w500"
-    }
 
     private var _binding: MovieDetailFragmentBinding? = null
     private val binding get() = _binding!!
@@ -43,13 +40,11 @@ class MovieDetailFragment : Fragment() {
         return binding.root
     }
 
-
     private fun initialize() {
         setUpViewModel()
         handleUIResult()
         handleErrorToast()
     }
-
 
     private fun setUpViewModel() {
         val args: MovieDetailFragmentArgs by navArgs()
@@ -73,18 +68,19 @@ class MovieDetailFragment : Fragment() {
     private fun handleUIResult() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collectLatest {
-                    when (it) {
+                viewModel.uiState.collectLatest { state ->
+                    when (state) {
                         is MovieDetailState.Error -> {
                             binding.progressBar.hideVisibility()
-                            Timber.e(it.error)
+                            Timber.e(state.error)
                         }
                         is MovieDetailState.Loading -> {
                             binding.progressBar.showVisibility()
                         }
                         is MovieDetailState.Success -> {
+                            binding.movieDetailsView.showVisibility()
                             binding.progressBar.hideVisibility()
-                            updateMovieUI(it.movie)
+                            updateMovieUI(state.movie)
                         }
                     }
                 }
@@ -98,7 +94,7 @@ class MovieDetailFragment : Fragment() {
             movieOverview.text = movie.detailOverview
             movieRating.text = movie.detailVoteAverage.toString()
             Glide.with(requireActivity())
-                .load("${movieImagePath}${movie.detailBackdropPath}")
+                .load(movie.detailBackdropPath)
                 .into(moviePhoto)
             movieOverview.text = movie.detailOverview
         }

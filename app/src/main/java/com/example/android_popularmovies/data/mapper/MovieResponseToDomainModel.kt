@@ -7,12 +7,14 @@ import javax.inject.Inject
 
 class MovieResponseToDomainModel @Inject constructor() : Mapper<MovieResponseModel, MovieDomainModel> {
     override fun map(type: MovieResponseModel): MovieDomainModel {
-        return MovieDomainModel(
-            id = type.id,
-            title = type.title,
-            posterPath = type.posterPath,
-            overview = type.overview,
-            voteAverage = type.voteAverage,
-        )
+        return with(type) {
+            MovieDomainModel(
+                id = id,
+                title = title,
+                posterPath = posterPath,
+                overview = overview,
+                voteAverage = voteAverage,
+            )
+        }
     }
 }

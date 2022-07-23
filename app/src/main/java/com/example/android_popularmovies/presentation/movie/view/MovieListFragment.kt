@@ -28,8 +28,8 @@ class MovieListFragment : Fragment() {
     private val viewModel: MovieListViewModel by viewModels()
     private var _binding: MovieListFragmentBinding? = null
     private val binding get() = _binding!!
-    private var moviesAdapter: MoviesAdapter = MoviesAdapter {
-        viewModel.onDetailTap(it)
+    private var moviesAdapter: MoviesAdapter = MoviesAdapter { id ->
+        viewModel.onDetailTap(id)
     }
 
     override fun onCreateView(
@@ -58,14 +58,14 @@ class MovieListFragment : Fragment() {
     private fun handleOnDetailTap() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.onTapDetailState.collectLatest {
+                viewModel.onTapDetailState.collectLatest { id ->
                     val navController = binding.root.findNavController()
-                        navController
-                            .navigate(
-                                MovieListFragmentDirections.actionMovieListFragmentToMovieDetailFragment(
-                                    it
-                                )
+                    navController
+                        .navigate(
+                            MovieListFragmentDirections.actionMovieListFragmentToMovieDetailFragment(
+                                id
                             )
+                        )
                 }
             }
         }
@@ -84,9 +84,9 @@ class MovieListFragment : Fragment() {
     }
 
     private fun setUpSearch(adapter: MoviesAdapter) {
-        binding.searchBar.addTextChangedListener {
-            it?.run {
-                adapter.updateMovies(viewModel.filterMovies(it.toString()))
+        binding.searchBar.addTextChangedListener { editable ->
+            editable?.run {
+                adapter.updateMovies(viewModel.filterMovies(toString()))
             }
         }
     }
@@ -94,10 +94,10 @@ class MovieListFragment : Fragment() {
     private fun handleError() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.errorState.collect {
+                viewModel.errorState.collect { message ->
                     Toast.makeText(
                         activity,
-                        it,
+                        message,
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -108,18 +108,19 @@ class MovieListFragment : Fragment() {
     private fun handleResult() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
-                    when (it) {
+                viewModel.uiState.collect { state ->
+                    when (state) {
                         is MovieListState.Error -> {
                             binding.progressBar.hideVisibility()
-                            Timber.e(it.error)
+                            Timber.e(state.error)
                         }
                         MovieListState.Loading -> {
                             binding.progressBar.showVisibility()
                         }
                         is MovieListState.Success -> {
                             binding.progressBar.hideVisibility()
-                            moviesAdapter.updateMovies(it.movies)
+                            binding.recyclerView.showVisibility()
+                            moviesAdapter.updateMovies(state.movies)
                         }
                     }
                     binding.recyclerView.adapter = moviesAdapter

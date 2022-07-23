@@ -8,13 +8,7 @@ class FilterMoviesUseCaseImpl @Inject constructor() : FilterMoviesUseCase {
     override operator fun invoke(
         movies: List<MovieDomainModel>,
         text: String
-    ): List<MovieDomainModel> {
-        val filteredMovies: MutableList<MovieDomainModel> = ArrayList()
-        for (d in movies) {
-            if (d.title.lowercase().contains(text.lowercase())) {
-                filteredMovies.add(d)
-            }
-        }
-        return filteredMovies
+    ) = movies.filter {
+        it.title.lowercase().contains(text.lowercase())
     }
 }
