@@ -75,6 +75,7 @@ class MovieListFragment : Fragment() {
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(activity, movieGridSpanCount)
+            adapter = moviesAdapter
         }
         setUpSearch(moviesAdapter)
     }
@@ -123,7 +124,6 @@ class MovieListFragment : Fragment() {
                             moviesAdapter.updateMovies(state.movies)
                         }
                     }
-                    binding.recyclerView.adapter = moviesAdapter
                 }
             }
         }
