@@ -11,7 +11,6 @@ import javax.inject.Singleton
 @Module
 class DispatcherModule {
     @Provides
-    @Singleton
     fun providesAppDispatchers(): AppDispatchers {
         return AppDispatchers()
     }
