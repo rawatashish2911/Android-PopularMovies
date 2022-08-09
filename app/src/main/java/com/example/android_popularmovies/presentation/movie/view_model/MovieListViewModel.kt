@@ -72,7 +72,7 @@ class MovieListViewModel @Inject constructor(
     }
 
     fun onDetailTap(id: Int) {
-        viewModelScope.launch(appDispatchers.Main) {
+        viewModelScope.launch {
             _onTapDetailState.emit(id)
         }
     }
