@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
 import com.example.android_popularmovies.R
 import com.example.android_popularmovies.presentation.movie.view.MainActivity
+import com.example.android_popularmovies.presentation.movie.view.MoviesActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -23,7 +24,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun navigate() {
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(Intent(this, MoviesActivity::class.java))
         finish()
     }
 

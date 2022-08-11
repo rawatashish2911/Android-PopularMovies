@@ -6,7 +6,6 @@ plugins {
     id 'androidx.navigation.safeargs'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
-    id 'kotlin-android-extensions'
 }
 apply from: "ktlint.gradle"
 
@@ -21,6 +20,9 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "movieApiKey", movieApiKey)
+        vectorDrawables {
+            useSupportLibrary true
+        }
     }
     testOptions {
         animationsDisabled true
@@ -50,9 +52,18 @@ android {
     }
     buildFeatures {
         viewBinding true
+        compose true
     }
     lintOptions {
         checkReleaseBuilds false
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
     }
     testOptions {
         unitTests {
@@ -72,6 +83,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation 'androidx.activity:activity-compose:1.3.1'
     testImplementation 'junit:junit:4.13.2'
     testImplementation "androidx.test:core:1.4.0"
     testImplementation "org.mockito:mockito-core:4.6.1"
@@ -93,6 +106,8 @@ dependencies {
 
     //Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     //ViewModel and LifeCycle
@@ -100,10 +115,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_ext_version"
     implementation "android.arch.lifecycle:extensions:$lifecycle_arch_ext_version"
-    kapt "android.arch.lifecycle:compiler:1.1.1"
+    kapt "android.arch.lifecycle:compiler:$lifecycle_arch_ext_version"
     implementation "androidx.activity:activity-ktx:$activity_ktx"
     implementation "androidx.fragment:fragment-ktx:$fragment_ktx"
-
 
 
     //Coroutines
@@ -119,7 +133,14 @@ dependencies {
 
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.11'
-    implementation 'com.google.firebase:firebase-analytics:21.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.12'
+    implementation 'com.google.firebase:firebase-analytics:21.1.0'
 
+    //Jetpack Compose
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.material:material-icons-core:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
 }
